@@ -49,7 +49,12 @@ Page {
                 model:  transBackend.timetable
 
                 delegate: TimetableEntryDelegate {
-
+                }
+                onAddChanged: {
+                    indicator.visible = false;
+                    errorMsg.visible = false;
+                    timetableDesc.title = transBackend.ArrivalMode
+                            //=== TransitousBackend.ArrivalMode ? qsTr("Arrivals") : qsTr("Departures")
                 }
             }
         }
@@ -82,7 +87,7 @@ Page {
                 break;
             case PageStatus.Deactivating:
                 errorMsg.visible = false;
-                transBackend.parser.cancelRequest();
+                //transBackend.parser.cancelRequest();
                 break;
         }
     }
@@ -98,13 +103,13 @@ Page {
     Connections {
         target: transBackend
 
-        onParserTimeTableResult: {
+        onTimeTableResult: {
             indicator.visible = false;
             errorMsg.visible = false;
             timetableDesc.title = transBackend.mode === TransitousBackend.ArrivalMode ? qsTr("Arrivals") : qsTr("Departures")
         }
 
-        onParserErrorOccured: {
+        onTimeTableError: {
             console.log("Got error")
             console.log(msg)
             errorMsg.visible = true;
