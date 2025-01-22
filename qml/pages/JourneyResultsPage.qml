@@ -1,6 +1,6 @@
 /****************************************************************************
 **
-**  This file is a part of Fahrplan.
+**  This file is a part of Transitous.
 **
 **  This program is free software; you can redistribute it and/or modify
 **  it under the terms of the GNU General Public License as published by
@@ -19,7 +19,6 @@
 
 import QtQuick 2.0
 import Sailfish.Silica 1.0
-import Fahrplan 1.0
 import "../delegates"
 
 Page {
@@ -39,7 +38,7 @@ Page {
                 enabled: listView.visible
                 onClicked: {
                     indicator.visible = true;
-                    fahrplanBackend.parser.searchJourneyEarlier();
+                    transBackend.parser.searchJourneyEarlier();
                 }
             }
         }
@@ -50,7 +49,7 @@ Page {
                 text: qsTr("Later")
                 onClicked: {
                     indicator.visible = true;
-                    fahrplanBackend.parser.searchJourneyLater();
+                    transBackend.parser.searchJourneyLater();
                 }
             }
         }
@@ -123,7 +122,7 @@ Page {
                 delegate: JourneyDelegate {
                     onClicked: {
                         pageStack.push(detailsResultsPage);
-                        fahrplanBackend.parser.getJourneyDetails(model.id);
+                        transBackend.parser.getJourneyDetails(model.id);
                     }
                 }
             }
@@ -156,14 +155,14 @@ Page {
                     errorMsg.visible = false;
                     journeyDesc.title = qsTr("Searching...");
                     journeyDate.text = "";
-                    fahrplanBackend.searchJourney();
+                    transBackend.searchJourney();
                 }
                 break;
             case PageStatus.Deactivating:
                 if (pageStack.depth === 1) {
                     indicator.visible = true;
                     errorMsg.visible = false;
-                    fahrplanBackend.parser.cancelRequest();
+                    transBackend.parser.cancelRequest();
                 }
                 break;
         }
@@ -181,7 +180,7 @@ Page {
     }
 
     Connections {
-        target: fahrplanBackend
+        target: transBackend
 
         onParserJourneyResult: {
             console.log("Got results");

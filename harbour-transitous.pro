@@ -16,6 +16,7 @@ CONFIG += sailfishapp_qml
 
 DISTFILES += qml/harbour-transitous.qml \
     qml/cover/CoverPage.qml \
+    qml/delegates/TransitousBackend.qml \
     qml/pages/AboutPage.qml \
     qml/pages/JourneyDetailsResultsPage.qml \
     qml/pages/JourneyResultsPage.qml \
@@ -29,6 +30,7 @@ DISTFILES += qml/harbour-transitous.qml \
     qml/delegates/JourneyDetailsTrainDelegate.qml \
     qml/delegates/StationDelegate.qml \
     qml/delegates/TimetableEntryDelegate.qml \
+    qml/pages/about.js \
     rpm/harbour-transitous.changes.in \
     rpm/harbour-transitous.changes.run.in \
     rpm/harbour-transitous.spec \

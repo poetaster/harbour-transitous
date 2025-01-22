@@ -7,4 +7,8 @@ ApplicationWindow {
     initialPage: Component { MainPage { } }
     cover: Qt.resolvedUrl("cover/CoverPage.qml")
     allowedOrientations: defaultAllowedOrientations
+
+    TransitousBackend {
+        id: transBackend
+    }
 }

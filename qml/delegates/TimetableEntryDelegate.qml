@@ -1,6 +1,6 @@
 /****************************************************************************
 **
-**  This file is a part of Fahrplan.
+**  This file is a part of Transitous.
 **
 **  This program is free software; you can redistribute it and/or modify
 **  it under the terms of the GNU General Public License as published by
@@ -19,7 +19,6 @@
 
 import QtQuick 2.0
 import Sailfish.Silica 1.0
-import Fahrplan 1.0
 
 Item {
     id: root
@@ -50,7 +49,7 @@ Item {
         }
         Label {
             id: lbl_destination
-            text: "%1 <b>%2</b>".arg(fahrplanBackend.mode === FahrplanBackend.ArrivalMode ? qsTr("from") : qsTr("to")).arg(model.destinationStation)
+            text: "%1 <b>%2</b>".arg(transBackend.mode === TransitousBackend.ArrivalMode ? qsTr("from") : qsTr("to")).arg(model.destinationStation)
             width: (parent.width - contentItem.spacing) * 2 / 3
             wrapMode: Text.WordWrap
         }

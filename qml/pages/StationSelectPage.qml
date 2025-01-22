@@ -1,6 +1,6 @@
 /****************************************************************************
 **
-**  This file is a part of Fahrplan.
+**  This file is a part of Transitous.
 **
 **  This program is free software; you can redistribute it and/or modify
 **  it under the terms of the GNU General Public License as published by
@@ -20,7 +20,6 @@
 import QtQuick 2.0
 import Sailfish.Silica 1.0
 import QtPositioning 5.0
-import Fahrplan 1.0
 import "../delegates"
 
 Dialog {
@@ -30,11 +29,11 @@ Dialog {
     property string searchString
 
     onSearchStringChanged: {
-        fahrplanBackend.findStationsByName(searchString);
+        transBackend.findStationsByName(searchString);
     }
 
-    property int type: FahrplanBackend.DepartureStation
-    property FahrplanBackend fahrplanBackend: null
+    property int type: TransitousBackend.DepartureStation
+    property TransitousBackend transBackend: null
 
     SilicaFlickable {
         anchors.fill: parent
@@ -72,14 +71,14 @@ Dialog {
                     icon.source: "image://theme/icon-m-gps"
 
                     onClicked: {
-                        fahrplanBackend.stationSearchResults.clear();
+                        transBackend.stationSearchResults.clear();
                         positionSource.update();
                     }
                 }
             }
 
             Column {
-                visible: (fahrplanBackend.stationSearchResults.count > 0)
+                visible: (transBackend.stationSearchResults.count > 0)
                 width: parent.width
 
                 SectionHeader {
@@ -87,7 +86,7 @@ Dialog {
                 }
 
                ListView {
-                    model: fahrplanBackend.stationSearchResults
+                    model: transBackend.stationSearchResults
                     width: parent.width
                     height: contentHeight
                     interactive: false
@@ -112,7 +111,7 @@ Dialog {
                 Label {
                     id: lbl_no_favorites
                     width: parent.width - Theme.paddingLarge
-                    visible: (fahrplanBackend.favorites.count === 0)
+                    visible: (transBackend.favorites.count === 0)
                     horizontalAlignment: Text.AlignHCenter
                     color: Theme.highlightColor
                     wrapMode: Text.WordWrap
@@ -120,7 +119,7 @@ Dialog {
                 }
 
                 ListView {
-                    model: fahrplanBackend.favorites
+                    model: transBackend.favorites
                     width: parent.width
                     height: contentHeight
                     interactive: false
@@ -140,7 +139,7 @@ Dialog {
     onStatusChanged: {
         switch (status) {
             case PageStatus.Activating:
-                gpsButton.visible = fahrplanBackend.parser.supportsGps();
+                gpsButton.visible = transBackend.parser.supportsGps();
                 break;
         }
     }
@@ -158,7 +157,7 @@ Dialog {
 
             if (positionSource.position.latitudeValid && positionSource.position.longitudeValid) {
                 console.log(qsTr("Searching for stations..."));
-                fahrplanBackend.findStationsByCoordinates(positionSource.position.coordinate.longitude, positionSource.position.coordinate.latitude);
+                transBackend.findStationsByCoordinates(positionSource.position.coordinate.longitude, positionSource.position.coordinate.latitude);
             } else {
                 console.log(qsTr("Waiting for GPS lock..."));
                 positionSource.update();

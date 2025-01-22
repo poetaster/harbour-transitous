@@ -1,6 +1,6 @@
 /****************************************************************************
 **
-**  This file is a part of Fahrplan.
+**  This file is a part of Transitous.
 **
 **  This program is free software; you can redistribute it and/or modify
 **  it under the terms of the GNU General Public License as published by
@@ -19,7 +19,6 @@
 
 import QtQuick 2.0
 import Sailfish.Silica 1.0
-import Fahrplan 1.0
 
 Page {
     property int searchmode : 0
@@ -50,7 +49,7 @@ Page {
             MenuItem {
                 text: qsTr("Settings")
                 onClicked: {
-                    pageStack.push(Qt.resolvedUrl("SettingsPage.qml"), {fahrplanBackend: fahrplanBackend})
+                    pageStack.push(Qt.resolvedUrl("SettingsPage.qml"), {transBackend: transBackend})
                 }
             }
             MenuItem {
@@ -71,7 +70,7 @@ Page {
             }
             MenuItem {
                 id: currentBackend
-                text: fahrplanBackend.parserShortName
+                text: transBackend.parserShortName
                 enabled: false
             }
         }
@@ -81,43 +80,43 @@ Page {
             ValueButton {
                 id: departureButton
                 label: qsTr("Departure Station")
-                value: fahrplanBackend.departureStationName
-                property int type: FahrplanBackend.DepartureStation
+                value: transBackend.departureStationName
+                property int type: TransitousBackend.DepartureStation
                 property bool menuOpen: stationSelectContextMenu.parent === departureButton
                 height: menuOpen ? stationSelectContextMenu.height + contentItem.height : contentItem.height
 
                 onClicked: {
-                    pageStack.push(Qt.resolvedUrl("StationSelectPage.qml"), {type: type, fahrplanBackend: fahrplanBackend})
+                    pageStack.push(Qt.resolvedUrl("StationSelectPage.qml"), {type: type, transBackend: transBackend})
                 }
                 onPressAndHold: {
-                    stationSelectContextMenu.openMenu(departureButton, FahrplanBackend.DepartureStation);
+                    stationSelectContextMenu.openMenu(departureButton, TransitousBackend.DepartureStation);
                 }
             }
             ValueButton {
                 id: viaButton
                 label: qsTr("Via Station")
-                value: fahrplanBackend.viaStationName
-                property int type: FahrplanBackend.ViaStation
+                value: transBackend.viaStationName
+                property int type: TransitousBackend.ViaStation
                 property bool menuOpen: stationSelectContextMenu.parent === viaButton
                 height: menuOpen ? stationSelectContextMenu.height + contentItem.height : contentItem.height
 
                 onClicked: {
-                      pageStack.push(Qt.resolvedUrl("StationSelectPage.qml"), {type: type, fahrplanBackend: fahrplanBackend})
+                      pageStack.push(Qt.resolvedUrl("StationSelectPage.qml"), {type: type, transBackend: transBackend})
                 }
                 onPressAndHold: {
-                    stationSelectContextMenu.openMenu(viaButton, FahrplanBackend.ViaStation);
+                    stationSelectContextMenu.openMenu(viaButton, TransitousBackend.ViaStation);
                 }
             }
             ValueButton {
                 id: arrivalButton
                 label: qsTr("Arrival Station")
-                value: fahrplanBackend.arrivalStationName
-                property int type: FahrplanBackend.ArrivalStation
+                value: transBackend.arrivalStationName
+                property int type: TransitousBackend.ArrivalStation
                 property bool menuOpen: stationSelectContextMenu.parent === arrivalButton
                 height: menuOpen ? stationSelectContextMenu.height + contentItem.height : contentItem.height
 
                 onClicked: {
-                    pageStack.push(Qt.resolvedUrl("StationSelectPage.qml"), {type: type, fahrplanBackend: fahrplanBackend})
+                    pageStack.push(Qt.resolvedUrl("StationSelectPage.qml"), {type: type, transBackend: transBackend})
                 }
                 onPressAndHold: {
                     stationSelectContextMenu.openMenu(arrivalButton);
@@ -126,21 +125,21 @@ Page {
             ValueButton {
                 id: currentButton
                 label: qsTr("Station")
-                value: fahrplanBackend.currentStationName
+                value: transBackend.currentStationName
                 onClicked: {
-                    pageStack.push(Qt.resolvedUrl("StationSelectPage.qml"), {type: FahrplanBackend.CurrentStation, fahrplanBackend: fahrplanBackend})
+                    pageStack.push(Qt.resolvedUrl("StationSelectPage.qml"), {type: TransitousBackend.CurrentStation, transBackend: transBackend})
 
                 }
             }
             ValueButton {
                 id: directionButton
                 label: qsTr("Direction")
-                value: fahrplanBackend.directionStationName
+                value: transBackend.directionStationName
                 property bool menuOpen: timeTableSelectContextMenu.parent === directionButton
                 height: menuOpen ? timeTableSelectContextMenu.height + contentItem.height : contentItem.height
 
                 onClicked: {
-                    pageStack.push(Qt.resolvedUrl("StationSelectPage.qml"), {type: FahrplanBackend.DirectionStation, fahrplanBackend: fahrplanBackend})
+                    pageStack.push(Qt.resolvedUrl("StationSelectPage.qml"), {type: TransitousBackend.DirectionStation, transBackend: transBackend})
                 }
                 onPressAndHold: {
                     timeTableSelectContextMenu.show(directionButton);
@@ -153,19 +152,19 @@ Page {
                     MenuItem {
                         text: qsTr("Departure: now")
                         onClicked: {
-                            fahrplanBackend.mode = FahrplanBackend.NowMode;
+                            transBackend.mode = TransitousBackend.NowMode;
                         }
                     }
                     MenuItem {
                         text: qsTr("Departure")
                         onClicked: {
-                            fahrplanBackend.mode = FahrplanBackend.DepartureMode;
+                            transBackend.mode = TransitousBackend.DepartureMode;
                         }
                     }
                     MenuItem {
                         text: qsTr("Arrival")
                         onClicked: {
-                            fahrplanBackend.mode = FahrplanBackend.ArrivalMode;
+                            transBackend.mode = TransitousBackend.ArrivalMode;
                         }
                     }
                 }
@@ -173,55 +172,55 @@ Page {
             ValueButton {
                 id: datePickerButton
                 label: qsTr("Date")
-                value: Qt.formatDate(fahrplanBackend.dateTime)
+                value: Qt.formatDate(transBackend.dateTime)
                 onClicked: {
                     var dialog = pageStack.push("Sailfish.Silica.DatePickerDialog", {
-                        date: fahrplanBackend.dateTime
+                        date: transBackend.dateTime
                     })
 
                     dialog.accepted.connect(function() {
-                        var dateTime = fahrplanBackend.dateTime;
+                        var dateTime = transBackend.dateTime;
                         dateTime.setFullYear(dialog.year);
                         // JavaScript Date's month is 0 based while DatePicker's is 1 based.
                         dateTime.setMonth(dialog.month - 1);
                         dateTime.setDate(dialog.day);
-                        fahrplanBackend.dateTime = dateTime;
+                        transBackend.dateTime = dateTime;
                     })
                 }
             }
             ValueButton {
                 id: timePickerButton
                 label: qsTr("Time")
-                value: Qt.formatTime(fahrplanBackend.dateTime, Qt.DefaultLocaleShortDate)
+                value: Qt.formatTime(transBackend.dateTime, Qt.DefaultLocaleShortDate)
                 onClicked: {
                     var dialog = pageStack.push("Sailfish.Silica.TimePickerDialog", {
-                        hour: Qt.formatDateTime ( fahrplanBackend.dateTime, "hh" ),
-                        minute: Qt.formatDateTime ( fahrplanBackend.dateTime, "mm" ),
-                        hourMode: fahrplanBackend.timeFormat24h() ? DateTime.TwentyFourHours : DateTime.TwelveHours
+                        hour: Qt.formatDateTime ( transBackend.dateTime, "hh" ),
+                        minute: Qt.formatDateTime ( transBackend.dateTime, "mm" ),
+                        hourMode: transBackend.timeFormat24h() ? DateTime.TwentyFourHours : DateTime.TwelveHours
                     })
 
                     dialog.accepted.connect(function() {
-                        var dateTime = fahrplanBackend.dateTime;
+                        var dateTime = transBackend.dateTime;
                         dateTime.setHours(dialog.hour);
                         dateTime.setMinutes(dialog.minute);
                         dateTime.setSeconds(0);
-                        fahrplanBackend.dateTime = dateTime;
+                        transBackend.dateTime = dateTime;
                     })
                 }
             }
             ComboBox {
                 id: trainrestrictionsButton
                 label: qsTr("Trains")
-                value: fahrplanBackend.trainrestrictionName
+                value: transBackend.trainrestrictionName
                 menu: ContextMenu {
                       Repeater {
-                           model: fahrplanBackend.trainrestrictions
+                           model: transBackend.trainrestrictions
                            MenuItem {
                                text: model.name
                            }
                       }
                       onActivated: {
-                          fahrplanBackend.setTrainrestriction(index)
+                          transBackend.setTrainrestriction(index)
                       }
                  }
             }
@@ -229,12 +228,12 @@ Page {
     }
     function updateButtonVisibility()
     {
-        if (!fahrplanBackend.parser.supportsTimeTable()) {
+        if (!transBackend.parser.supportsTimeTable()) {
             searchmode = 0;
         }
 
         if (searchmode == 0) {
-            viaButton.visible = fahrplanBackend.parser.supportsVia();
+            viaButton.visible = transBackend.parser.supportsVia();
             departureButton.visible = true;
             arrivalButton.visible = true;
             currentButton.visible = false;
@@ -246,14 +245,14 @@ Page {
             departureButton.visible = false;
             arrivalButton.visible = false;
             currentButton.visible = true;
-            directionButton.visible = fahrplanBackend.parser.supportsTimeTableDirection();
+            directionButton.visible = transBackend.parser.supportsTimeTableDirection();
             pageStack.pushAttached(timetablePage, {})
         }
     }
 
     function updateModeCheckboxes()
     {
-        if (fahrplanBackend.mode === FahrplanBackend.NowMode) {
+        if (transBackend.mode === TransitousBackend.NowMode) {
             modeSelect.currentIndex = 0;
             datePickerButton.visible = false;
             timePickerButton.visible = false;
@@ -263,11 +262,11 @@ Page {
         datePickerButton.visible = true;
         timePickerButton.visible = true;
 
-        if (fahrplanBackend.mode === FahrplanBackend.DepartureMode) {
+        if (transBackend.mode === TransitousBackend.DepartureMode) {
             modeSelect.currentIndex = 1;
             return;
         }
-        if (fahrplanBackend.mode === FahrplanBackend.ArrivalMode) {
+        if (transBackend.mode === TransitousBackend.ArrivalMode) {
             modeSelect.currentIndex = 2;
             return;
         }
@@ -289,27 +288,27 @@ Page {
             id: switchWithDepartureStation
             text: qsTr("Switch with Departure station")
             onClicked: {
-                fahrplanBackend.swapStations(stationSelectContextMenu.opener.type, FahrplanBackend.DepartureStation)
+                transBackend.swapStations(stationSelectContextMenu.opener.type, TransitousBackend.DepartureStation)
             }
         }
         MenuItem {
             id: switchWithArrivalStation
             text: qsTr("Switch with Arrival station")
             onClicked: {
-                fahrplanBackend.swapStations(stationSelectContextMenu.opener.type, FahrplanBackend.ArrivalStation)
+                transBackend.swapStations(stationSelectContextMenu.opener.type, TransitousBackend.ArrivalStation)
             }
         }
         MenuItem {
             id: switchWithViaStation
             text: qsTr("Switch with Via station")
             onClicked: {
-                fahrplanBackend.swapStations(stationSelectContextMenu.opener.type, FahrplanBackend.ViaStation)
+                transBackend.swapStations(stationSelectContextMenu.opener.type, TransitousBackend.ViaStation)
             }
         }
         MenuItem {
             text: qsTr("Clear station")
             onClicked: {
-                fahrplanBackend.resetStation(stationSelectContextMenu.opener.type);
+                transBackend.resetStation(stationSelectContextMenu.opener.type);
             }
         }
 
@@ -320,7 +319,7 @@ Page {
             switchWithDepartureStation.visible = false;
             switchWithArrivalStation.visible = false;
 
-            if (opener != viaButton && fahrplanBackend.parser.supportsVia()) {
+            if (opener != viaButton && transBackend.parser.supportsVia()) {
                 switchWithViaStation.visible = true;
             }
             if (opener != arrivalButton) {
@@ -340,13 +339,13 @@ Page {
         MenuItem {
             text: qsTr("Clear station")
             onClicked: {
-                fahrplanBackend.resetStation(FahrplanBackend.DirectionStation);
+                transBackend.resetStation(TransitousBackend.DirectionStation);
             }
         }
     }
 
     Connections {
-        target: fahrplanBackend
+        target: transBackend
 
         onParserChanged: {
             console.log("Switching to " + name);

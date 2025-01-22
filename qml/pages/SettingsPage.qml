@@ -1,6 +1,6 @@
 /****************************************************************************
 **
-**  This file is a part of Fahrplan.
+**  This file is a part of Transitous.
 **
 **  This program is free software; you can redistribute it and/or modify
 **  it under the terms of the GNU General Public License as published by
@@ -19,11 +19,10 @@
 
 import QtQuick 2.0
 import Sailfish.Silica 1.0
-import Fahrplan 1.0
 
 Page {
     id: settingsPage
-    property FahrplanBackend fahrplanBackend: null
+    property TransitousBackend transBackend: null
 
     SilicaFlickable {
         anchors.fill: parent
@@ -41,19 +40,19 @@ Page {
             }
 
             TextSwitch {
-                visible: fahrplanBackend.supportsCalendar
+                visible: transBackend.supportsCalendar
                 text: qsTr("Compact calendar entries")
                 description: qsTr("Use shorter text format in the calendar event description")
                 onCheckedChanged: {
-                    fahrplanBackend.storeSettingsValue("compactCalendarEntries", checked);
+                    transBackend.storeSettingsValue("compactCalendarEntries", checked);
                 }
                 Component.onCompleted: {
-                    checked = fahrplanBackend.getSettingsValue("compactCalendarEntries", false) === "true" ? true : false;
+                    checked = transBackend.getSettingsValue("compactCalendarEntries", false) === "true" ? true : false;
                 }
             }
 
             ComboBox {
-                visible: fahrplanBackend.supportsCalendar
+                visible: transBackend.supportsCalendar
                 label: qsTr("Add journeys to calendar")
                 value: calendarManager.selectedCalendarName
                 menu: ContextMenu {
@@ -73,20 +72,20 @@ Page {
             ComboBox {
                 id: currentBackend
                 label: qsTr("Backend")
-                value: fahrplanBackend.parserName
+                value: transBackend.parserName
                 menu: ContextMenu {
                       Repeater {
-                           model: fahrplanBackend.backends
+                           model: transBackend.backends
                            MenuItem {
                                text: model.name
                            }
                       }
                       Component.onCompleted: {
-                          currentBackend.currentIndex = fahrplanBackend.backends.getItemIndexForParserId(fahrplanBackend.getSettingsValue("currentBackend", 0));
+                          currentBackend.currentIndex = transBackend.backends.getItemIndexForParserId(transBackend.getSettingsValue("currentBackend", 0));
                       }
                 }
                 onCurrentIndexChanged: {
-                    fahrplanBackend.setParser(fahrplanBackend.backends.getParserIdForItemIndex(currentIndex))
+                    transBackend.setParser(transBackend.backends.getParserIdForItemIndex(currentIndex))
                 }
 
             }
@@ -95,7 +94,7 @@ Page {
                 anchors.horizontalCenter: parent.horizontalCenter
                 text: qsTr("About")
                 onClicked: {
-                    pageStack.push(Qt.resolvedUrl("AboutPage.qml"), {fahrplanBackend: fahrplanBackend})
+                    pageStack.push(Qt.resolvedUrl("AboutPage.qml"), {transBackend: transBackend})
                 }
             }
         }

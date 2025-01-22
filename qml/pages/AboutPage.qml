@@ -1,6 +1,6 @@
 /****************************************************************************
 **
-**  This file is a part of Fahrplan.
+**  This file is a part of Transitous.
 **
 **  This program is free software; you can redistribute it and/or modify
 **  it under the terms of the GNU General Public License as published by
@@ -19,12 +19,11 @@
 
 import QtQuick 2.0
 import Sailfish.Silica 1.0
-import Fahrplan 1.0
-import "../../about.js" as About
+import "about.js" as About
 
 Page {
     id: aboutPage
-    property FahrplanBackend fahrplanBackend: null
+    property TransitousBackend transBackend: null
 
     SilicaFlickable {
         anchors.fill: parent
@@ -63,7 +62,7 @@ Page {
                 }
 
                 Label {
-                    text: qsTr("Version") + " " + fahrplanBackend.version
+                    text: qsTr("Version") + " " + transBackend.version
                     anchors {
                         horizontalCenter: parent.horizontalCenter
                     }

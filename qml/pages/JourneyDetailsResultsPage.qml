@@ -1,6 +1,6 @@
 /****************************************************************************
 **
-**  This file is a part of Fahrplan.
+**  This file is a part of Transitous.
 **
 **  This program is free software; you can redistribute it and/or modify
 **  it under the terms of the GNU General Public License as published by
@@ -19,7 +19,6 @@
 
 import QtQuick 2.0
 import Sailfish.Silica 1.0
-import Fahrplan 1.0
 import "../delegates"
 
 Page {
@@ -37,13 +36,13 @@ Page {
 
         PushUpMenu {
             id: pushUpMenu
-            //visible: (indicator.visible === false) && (fahrplanBackend.supportsCalendar)
+            //visible: (indicator.visible === false) && (transBackend.supportsCalendar)
 
             MenuItem {
                 id: addToCalendar
                 text: qsTr("Add to calendar")
                 onClicked: {
-                    fahrplanBackend.addJourneyDetailResultToCalendar(currentResult);
+                    transBackend.addJourneyDetailResultToCalendar(currentResult);
                     //addToCalendar.enabled = false;
                     //pushUpMenu.busy = true;
                 }
@@ -145,7 +144,7 @@ Page {
     }
 
     Connections {
-        target: fahrplanBackend
+        target: transBackend
 
         onAddCalendarEntryComplete: {
             addToCalendar.enabled = true;

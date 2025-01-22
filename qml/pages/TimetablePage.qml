@@ -1,6 +1,6 @@
 /****************************************************************************
 **
-**  This file is a part of Fahrplan.
+**  This file is a part of Transitous.
 **
 **  This program is free software; you can redistribute it and/or modify
 **  it under the terms of the GNU General Public License as published by
@@ -19,7 +19,6 @@
 
 import QtQuick 2.0
 import Sailfish.Silica 1.0
-import Fahrplan 1.0
 import "../delegates"
 
 Page {
@@ -47,7 +46,7 @@ Page {
                 interactive: false
                 visible: !indicator.visible && !errorMsg.visible
 
-                model:  fahrplanBackend.timetable
+                model:  transBackend.timetable
 
                 delegate: TimetableEntryDelegate {
 
@@ -79,11 +78,11 @@ Page {
                 indicator.visible = true;
                 errorMsg.visible = false;
                 timetableDesc.title = qsTr("Searching...");
-                fahrplanBackend.getTimeTable();
+                transBackend.getTimeTable();
                 break;
             case PageStatus.Deactivating:
                 errorMsg.visible = false;
-                fahrplanBackend.parser.cancelRequest();
+                transBackend.parser.cancelRequest();
                 break;
         }
     }
@@ -97,12 +96,12 @@ Page {
 
 
     Connections {
-        target: fahrplanBackend
+        target: transBackend
 
         onParserTimeTableResult: {
             indicator.visible = false;
             errorMsg.visible = false;
-            timetableDesc.title = fahrplanBackend.mode === FahrplanBackend.ArrivalMode ? qsTr("Arrivals") : qsTr("Departures")
+            timetableDesc.title = transBackend.mode === TransitousBackend.ArrivalMode ? qsTr("Arrivals") : qsTr("Departures")
         }
 
         onParserErrorOccured: {
