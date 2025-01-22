@@ -152,19 +152,22 @@ Page {
                     MenuItem {
                         text: qsTr("Departure: now")
                         onClicked: {
-                            transBackend.mode = TransitousBackend.NowMode;
+                            transBackend.mode = "now" //TransitousBackend.NowMode;
+                            transBackend.ArrivalMode = "Departures"
                         }
                     }
                     MenuItem {
                         text: qsTr("Departure")
                         onClicked: {
-                            transBackend.mode = TransitousBackend.DepartureMode;
+                            transBackend.mode = "departure" // TransitousBackend.DepartureMode;
+                            transBackend.ArrivalMode = "Departures"
                         }
                     }
                     MenuItem {
                         text: qsTr("Arrival")
                         onClicked: {
-                            transBackend.mode = TransitousBackend.ArrivalMode;
+                            transBackend.mode = "arrival" //TransitousBackend.ArrivalMode;
+                            transBackend.ArrivalMode = "Arrivals"
                         }
                     }
                 }
@@ -233,7 +236,7 @@ Page {
         }
 
         if (searchmode == 0) {
-            viaButton.visible = transBackend.parser.supportsVia();
+            viaButton.visible = true; //transBackend.parser.supportsVia();
             departureButton.visible = true;
             arrivalButton.visible = true;
             currentButton.visible = false;
@@ -245,14 +248,14 @@ Page {
             departureButton.visible = false;
             arrivalButton.visible = false;
             currentButton.visible = true;
-            directionButton.visible = transBackend.parser.supportsTimeTableDirection();
+            directionButton.visible = true; // transBackend.parser.supportsTimeTableDirection();
             pageStack.pushAttached(timetablePage, {})
         }
     }
 
     function updateModeCheckboxes()
     {
-        if (transBackend.mode === TransitousBackend.NowMode) {
+        if (transBackend.mode === "now" ) { //TransitousBackend.NowMode) {
             modeSelect.currentIndex = 0;
             datePickerButton.visible = false;
             timePickerButton.visible = false;
@@ -262,11 +265,11 @@ Page {
         datePickerButton.visible = true;
         timePickerButton.visible = true;
 
-        if (transBackend.mode === TransitousBackend.DepartureMode) {
+        if (transBackend.mode === "departure" ) { // TransitousBackend.DepartureMode) {
             modeSelect.currentIndex = 1;
             return;
         }
-        if (transBackend.mode === TransitousBackend.ArrivalMode) {
+        if (transBackend.mode === "arrival" ) { // TransitousBackend.ArrivalMode) {
             modeSelect.currentIndex = 2;
             return;
         }
